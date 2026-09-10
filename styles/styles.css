@@ -65,7 +65,11 @@ body.appear {
 }
 
 header {
-  height: var(--nav-height);
+  /* min-height (not height): reserves layout space before the header block
+     loads, without clipping it once loaded — the WKND header (utility bar +
+     main bar) is taller than --nav-height on both mobile and desktop, and a
+     fixed height cut it off, hiding the main bar behind the page content. */
+  min-height: var(--nav-height);
 }
 
 header .header,
