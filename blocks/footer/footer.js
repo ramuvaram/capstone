@@ -2,6 +2,9 @@
 // copyright/legal copy. Content-first: all copy/links/images live in
 // /content/footer.plain.html; this module reads that DOM and lays it out.
 
+// eslint-disable-next-line import/no-unresolved
+import { decorateIcons } from '../../scripts/aem.js';
+
 /**
  * Fetch the footer fragment (metadata-independent dual-fetch): the root path
  * (/footer.plain.html) resolves on both production (DA/EDS) and local `aem up`,
@@ -16,6 +19,10 @@ async function fetchFooter() {
   const html = await resp.text();
   const tmp = document.createElement('div');
   tmp.innerHTML = html;
+  // Logo/social icons are authored as EDS icon spans; decorateIcons turns them
+  // into <img src="/icons/name.svg"> served from the repo (authored <img> in a
+  // fragment goes through the media pipeline and resolves to about:error).
+  decorateIcons(tmp);
   // Relative image paths in the fragment (images/foo.svg) would resolve against
   // the current page URL; rewrite to a root-absolute path so they load on any page.
   tmp.querySelectorAll('img[src]').forEach((img) => {

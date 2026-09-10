@@ -2,6 +2,9 @@
 // Content-first: all copy/links/images live in /content/nav.plain.html; this module
 // reads that DOM and builds layout + interactive controls (search, locale toggle).
 
+// eslint-disable-next-line import/no-unresolved
+import { decorateIcons } from '../../scripts/aem.js';
+
 const isDesktop = window.matchMedia('(min-width: 900px)');
 
 /**
@@ -18,6 +21,11 @@ async function fetchNav() {
   const html = await resp.text();
   const tmp = document.createElement('div');
   tmp.innerHTML = html;
+  // Logos/flags are authored as EDS icon spans (<span class="icon icon-name">);
+  // decorateIcons turns them into <img src="/icons/name.svg"> served straight
+  // from the repo. Authored <img> in a fragment goes through the media pipeline
+  // and resolves to about:error, so icons are the reliable path here.
+  decorateIcons(tmp);
   // Relative image paths in the fragment (images/foo.svg) would resolve against
   // the current page URL; rewrite to a root-absolute path so they load on any page.
   tmp.querySelectorAll('img[src]').forEach((img) => {
