@@ -30,40 +30,6 @@ function makeFlag(name, size = 24) {
 }
 
 /**
- * Re-inject the logo and locale flags the fragment can't carry. Matches by
- * structure/text: the brand logo into the first section's link, the toggle flag
- * into the #langNavToggle link, and each country flag into its locale row.
- */
-function injectNavIcons(tmp) {
-  const sections = [...tmp.querySelectorAll(':scope > div')];
-  // Brand logo: first section, the (image-less) link around the wordmark.
-  const brandLink = sections[0]?.querySelector('a');
-  if (brandLink && !brandLink.querySelector('img')) {
-    const logo = document.createElement('img');
-    logo.src = '/icons/wknd-logo.svg';
-    logo.alt = 'WKND Logo';
-    logo.width = 239;
-    logo.height = 89;
-    brandLink.textContent = '';
-    brandLink.append(logo);
-  }
-  // Locale toggle flag: the #langNavToggle link (its text label stays in the <p>).
-  const toggleLink = tmp.querySelector('a[href="#langNavToggle"]');
-  if (toggleLink && !toggleLink.querySelector('img')) {
-    toggleLink.append(makeFlag('united states', 25));
-  }
-  // Country-row flags: each locale <li> begins with the country name.
-  const localeList = sections[sections.length - 1]?.querySelector('ul');
-  localeList?.querySelectorAll(':scope > li').forEach((row) => {
-    if (row.querySelector('img')) return;
-    const links = row.querySelector('ul');
-    const name = row.textContent.replace(links ? links.textContent : '', '').trim();
-    const img = makeFlag(name);
-    if (img) row.querySelector('p')?.prepend(img);
-  });
-}
-
-/**
  * Fetch the nav fragment (metadata-independent dual-fetch): the root path
  * (/nav.plain.html) resolves on both production (DA/EDS) and local `aem up`,
  * so try it first to avoid a guaranteed 404 (which logs a console error and
@@ -77,10 +43,11 @@ async function fetchNav() {
   const html = await resp.text();
   const tmp = document.createElement('div');
   tmp.innerHTML = html;
-  // The logo and locale flags don't survive the DA→EDS markdown conversion
-  // (authored <img> becomes about:error; icon-spans get stripped), so inject
-  // them here from the repo /icons/ folder, which serves directly.
-  injectNavIcons(tmp);
+  // Note: the logo and locale flags don't survive the DA→EDS markdown conversion
+  // (authored <img> → about:error; icon-spans stripped), and the pipeline may
+  // collapse the authored sections into one <div>. decorate() rebuilds the nav
+  // groups by content pattern and injects the /icons/ images, so no per-image
+  // rewrite is needed here.
   // Internal links authored with a .html extension 404 on EDS (which serves
   // extensionless URLs); strip .html from same-site paths. Leave external
   // (https://) links and in-page anchors (#…) untouched.
@@ -185,10 +152,54 @@ export default async function decorate(block) {
   block.textContent = '';
   if (!frag) return;
 
-  const sections = [...frag.querySelectorAll(':scope > div')];
-  const brandContent = sections[0];
-  const linksContent = sections[1];
-  const toolsContent = sections[2];
+  // The DA→EDS render pipeline sometimes collapses the three authored sections
+  // (brand / links / tools) into a single <div> and drops the logo-only section.
+  // Rebuild the three logical groups by content pattern so the layout below is
+  // resilient to that, rather than depending on section order/count.
+  // Brand: build fresh with the repo logo (the authored logo section rarely
+  // survives the pipeline, and an authored <img> would 404 anyway).
+  const brandContent = document.createElement('div');
+  brandContent.innerHTML = '<p><a href="/us/en">'
+    + '<img src="/icons/wknd-logo.svg" alt="WKND Logo" width="239" height="89"></a></p>';
+
+  // Links: the first top-level nav <ul> (its <li>s are simple page links, not the
+  // nested country list). Pick the <ul> whose items have no nested <ul>.
+  let navUl = null;
+  frag.querySelectorAll('ul').forEach((ul) => {
+    if (navUl) return;
+    const isCountryList = ul.querySelector(':scope > li > ul');
+    if (!isCountryList && ul.querySelector('a')) navUl = ul;
+  });
+  const linksContent = document.createElement('div');
+  if (navUl) linksContent.append(navUl.cloneNode(true));
+
+  // Tools: Sign In link + locale label + the country <ul>. Gather them from the
+  // fragment regardless of which section they landed in.
+  const toolsContent = document.createElement('div');
+  const signIn = frag.querySelector('a[href="#sign-in"]');
+  if (signIn) toolsContent.append(signIn.closest('p') || signIn);
+  const localeToggleP = [...frag.querySelectorAll('p')]
+    .find((p) => /en-us/i.test(p.textContent) && !p.querySelector('a[href="#sign-in"]'));
+  const countryUl = [...frag.querySelectorAll('ul')].find((ul) => ul.querySelector(':scope > li > ul'));
+  // Author the locale toggle as a <p><a #langNavToggle> so the existing branch
+  // (which keys off an <img> in the anchor) fires after injectNavIcons adds it.
+  const toggleP = document.createElement('p');
+  toggleP.innerHTML = '<a href="#langNavToggle">'
+    + '<img class="nav-locale-flag" src="/icons/flag-us.svg" alt="US" width="25" height="25"></a> en-US';
+  toolsContent.append(toggleP);
+  if (localeToggleP && localeToggleP !== toggleP) localeToggleP.remove();
+  if (countryUl) {
+    // inject country flags by name into the cloned list
+    const cul = countryUl.cloneNode(true);
+    cul.querySelectorAll(':scope > li').forEach((row) => {
+      if (row.querySelector('img')) return;
+      const links = row.querySelector('ul');
+      const name = row.textContent.replace(links ? links.textContent : '', '').trim();
+      const img = makeFlag(name);
+      if (img) row.querySelector('p')?.prepend(img);
+    });
+    toolsContent.append(cul);
+  }
 
   const wrapper = document.createElement('div');
   wrapper.className = 'nav-wrapper';
