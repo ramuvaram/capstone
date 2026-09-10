@@ -1,0 +1,16 @@
+{
+  "variantName": "carousel-gallery",
+  "baseBlock": "carousel",
+  "canonicalModel": "collection",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "image-gallery",
+    "imagePattern": "full-bleed-image",
+    "structure": "image-only slide"
+  },
+  "contentPattern": "Each row is one slide with a single image cell. Image-only rotating gallery with prev/next controls and dot indicators; no overlay content card.",
+  "usage": "Full-bleed image-only hero gallery for adventure detail pages. Rotates through photos with navigation arrows and indicators.",
+  "options": [],
+  "memberVariantIds": ["carousel-gallery"]
+}

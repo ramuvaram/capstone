@@ -1,0 +1,112 @@
+/* columns-featured — featured-article teaser
+   Source: WKND .teaser.cmp-teaser--featured
+   Layout: large image left, grey text panel right (eyebrow, heading, paragraph, yellow CTA). */
+
+/* row — mobile-first: stack image over content */
+.columns-featured > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.columns-featured img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* content cell (the non-image column) — grey panel */
+.columns-featured > div > div {
+  order: 1;
+  padding: 36px;
+  background-color: #ebebeb;
+}
+
+/* image cell */
+.columns-featured > div > .columns-featured-img-col {
+  order: 0;
+  padding: 0;
+  background-color: transparent;
+}
+
+/* description paragraph */
+.columns-featured > div > div > p {
+  margin: 0 0 13.5px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24.5px;
+  color: var(--text-color);
+}
+
+/* eyebrow — first paragraph in content cell ("Featured Article") */
+.columns-featured > div > div > p:first-child {
+  margin: 0 0 13.5px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 45px;
+}
+
+/* heading */
+.columns-featured h2 {
+  margin: 18px 0;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xl);
+  font-weight: 400;
+  line-height: 54px;
+  color: var(--text-color);
+}
+
+/* CTA — source link is a bare <a> styled as the yellow WKND button */
+.columns-featured > div > div a {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 14px 35px;
+  border: 2px solid var(--brand-color);
+  background-color: var(--brand-color);
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.columns-featured > div > div a:hover,
+.columns-featured > div > div a:focus-visible {
+  border-color: var(--text-color);
+  background-color: var(--text-color);
+  color: var(--brand-color);
+  text-decoration: none;
+}
+
+/* the CTA sits in its own paragraph — reset that paragraph's type styles */
+.columns-featured > div > div > p:last-child {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+@media (width >= 900px) {
+  .columns-featured > div {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  /* image ~62%, content panel ~38% (source: 709px / 427px of 1136px) */
+  .columns-featured > div > .columns-featured-img-col {
+    flex: 0 0 62.5%;
+    order: unset;
+    max-width: 62.5%;
+  }
+
+  .columns-featured > div > div {
+    flex: 1;
+    order: unset;
+    padding: 63px 36px 36px;
+  }
+
+  .columns-featured > div > .columns-featured-img-col img {
+    width: 100%;
+    height: 100%;
+  }
+}

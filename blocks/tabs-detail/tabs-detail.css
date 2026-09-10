@@ -1,0 +1,71 @@
+/* Block: tabs-detail — WKND adventure trip details tabs */
+
+/* Values extracted from source computed styles at wknd.site */
+
+/* ---- Tab bar (tablist) ---- */
+.tabs-detail .tabs-detail-list {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 0;
+  margin: 18px 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* ---- Tab buttons ---- */
+.tabs-detail .tabs-detail-list button.tabs-detail-tab {
+  flex: 0 0 max-content;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.tabs-detail .tabs-detail-list button.tabs-detail-tab p {
+  margin: 0;
+}
+
+.tabs-detail .tabs-detail-list button.tabs-detail-tab[aria-selected='true'] {
+  background-color: var(--dark-color);
+  color: var(--background-color);
+  cursor: default;
+}
+
+/* ---- Panels ---- */
+.tabs-detail .tabs-detail-panel {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+.tabs-detail .tabs-detail-panel[aria-hidden='true'] {
+  display: none;
+}
+
+/* Panel text — keep scoped to direct paragraphs so nested content
+   (e.g. card grids on the adventures listing page) is untouched */
+/* stylelint-disable-next-line no-descending-specificity */
+.tabs-detail .tabs-detail-panel > div > p {
+  margin: 0 0 13.5px;
+  font-size: var(--body-font-size-m);
+  line-height: 45px;
+}
+
+.tabs-detail .tabs-detail-panel img {
+  width: 100%;
+  margin: 7px 0;
+}

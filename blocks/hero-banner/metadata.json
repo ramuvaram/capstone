@@ -1,0 +1,24 @@
+{
+  "variantName": "hero-banner",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "promo-banner",
+    "imagePattern": "full-bleed-background",
+    "structure": "background image + heading + paragraph + CTA"
+  },
+  "contentPattern": "One row with an image cell (full-bleed background) and a text cell (heading + paragraph + CTA button) that renders as a white overlay content card.",
+  "usage": {
+    "pagesUsing": [
+      "/us/en/adventures"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-09T12:28:57.086Z"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "hero-banner"
+  ]
+}

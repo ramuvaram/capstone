@@ -1,0 +1,16 @@
+{
+  "variantName": "carousel-hero",
+  "baseBlock": "carousel",
+  "canonicalModel": "collection",
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "spacious",
+    "purpose": "hero",
+    "imagePattern": "full-bleed-background",
+    "structure": "image + heading + description + CTA per slide"
+  },
+  "contentPattern": "2 columns per row; each row is one slide: cell 1 full-bleed background image (mandatory), cell 2 overlay content card (heading + description + CTA button).",
+  "usage": "Full-bleed hero carousel with dark background photography and a white overlay content card per slide. Used for the top-of-page rotating hero.",
+  "options": [],
+  "memberVariantIds": ["carousel-hero"]
+}

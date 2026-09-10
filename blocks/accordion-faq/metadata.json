@@ -1,0 +1,16 @@
+{
+  "variantName": "accordion-faq",
+  "baseBlock": "accordion",
+  "canonicalModel": "collection",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "comfortable",
+    "purpose": "faq",
+    "imagePattern": "none",
+    "structure": "expandable question/answer rows"
+  },
+  "contentPattern": "Each row is one Q&A item: cell 1 is the question (summary label), cell 2 is the answer body. Rendered as native <details>/<summary> accordion items that expand on click.",
+  "usage": "Expandable FAQ accordion. Each item shows a question that toggles open to reveal its answer.",
+  "options": [],
+  "memberVariantIds": ["accordion-faq"]
+}

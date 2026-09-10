@@ -1,0 +1,11 @@
+{
+  "type": "da",
+  "sites": {
+    "capstone": {
+      "previewOrg": "ramuvaram",
+      "previewSite": "capstone",
+      "contentHostUrl": "https://content.da.live/ramuvaram/capstone/",
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+    }
+  }
+}
