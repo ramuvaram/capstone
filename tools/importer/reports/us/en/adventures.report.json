@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://wknd.site/us/en/adventures.html",
+  "path": "us/en/adventures",
+  "timestamp": "2026-09-09T12:34:52.831Z",
+  "title": "Adventures",
+  "template": "adventures-2",
+  "blocks": [
+    "hero-banner",
+    "tabs-detail"
+  ]
+}

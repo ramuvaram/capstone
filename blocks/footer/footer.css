@@ -1,20 +1,152 @@
+/* WKND footer — dark bar, light text. Mobile-first. */
+
 footer {
-  background-color: var(--light-color);
-  font-size: var(--body-font-size-xs);
+  background-color: rgb(32 32 32);
+  color: rgb(235 235 235);
+  font-family: 'Source Sans Pro', 'Helvetica Neue', helvetica, arial, sans-serif;
 }
 
-footer .footer > div {
-  margin: auto;
+footer .footer-inner {
   max-width: 1200px;
-  padding: 40px 24px 24px;
+  margin: 0 auto;
+  padding: 24px 16px;
 }
 
-footer .footer p {
+footer .footer-inner p {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+footer a {
+  color: rgb(235 235 235);
+  text-decoration: none;
+}
+
+footer a:hover,
+footer a:focus {
+  text-decoration: underline;
+}
+
+footer ul {
+  list-style: none;
   margin: 0;
+  padding: 0;
 }
 
+/* --- Top row: brand + nav (left), Follow Us + social (right) --- */
+footer .footer-top {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Brand + footer nav */
+footer .footer-brand-nav p {
+  margin: 0 0 16px;
+}
+
+footer .footer-brand-nav img {
+  width: 128px;
+  height: auto;
+}
+
+footer .footer-brand-nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+footer .footer-brand-nav ul a {
+  color: rgb(235 235 235);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+/* Follow Us + social icons */
+footer .footer-social {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+footer .footer-social h4 {
+  margin: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+footer .footer-social ul {
+  display: flex;
+  gap: 10px;
+}
+
+/* icon-only social links in white rounded boxes (matches source) */
+footer .footer-social ul a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+footer .footer-social ul a:where(:hover, :focus) {
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+footer .footer-social img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* Legal / copyright */
+footer .footer-legal {
+  margin-top: 24px;
+  font-size: 12px;
+}
+
+footer .footer-legal p {
+  font-size: 12px;
+  color: rgb(180 180 180);
+}
+
+footer .footer-legal p a {
+  color: rgb(235 235 235);
+  text-decoration: underline;
+}
+
+/* --- Desktop --- */
 @media (width >= 900px) {
-  footer .footer > div {
-    padding: 40px 32px 24px;
+  footer .footer-inner {
+    padding: 40px 32px 32px;
+  }
+
+  /* brand + nav on the left, Follow Us + social pushed to the far right */
+  footer .footer-top {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  footer .footer-brand-nav {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+
+  footer .footer-brand-nav p {
+    margin: 0;
+  }
+
+  footer .footer-brand-nav ul {
+    flex-direction: row;
+    gap: 32px;
   }
 }
