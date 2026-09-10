@@ -54,8 +54,18 @@ export default function decorate(block) {
     ul.append(li);
   });
   ul.querySelectorAll('picture > img').forEach((img) => {
-    const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '500' }]);
-    img.closest('picture').replaceWith(optimizedPic);
+    // Only optimize same-origin (DA/EDS) images — createOptimizedPicture appends
+    // ?width/format/optimize params the origin must serve. Imported content still
+    // points at the source site (wknd.site), which 404s on those params, so leave
+    // external images untouched.
+    let sameOrigin = false;
+    try {
+      sameOrigin = new URL(img.src, window.location.href).origin === window.location.origin;
+    } catch { sameOrigin = false; }
+    if (sameOrigin) {
+      const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '500' }]);
+      img.closest('picture').replaceWith(optimizedPic);
+    }
   });
   block.textContent = '';
   block.append(ul);

@@ -29,8 +29,18 @@ export default function decorate(block) {
     ul.append(li);
   });
   ul.querySelectorAll('picture > img').forEach((img) => {
-    const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
-    img.closest('picture').replaceWith(optimizedPic);
+    // createOptimizedPicture only works for same-origin (DA/EDS) assets — it
+    // appends ?width/format/optimize params the origin must support. The imported
+    // content still references the source site (wknd.site), which 404s on those
+    // params, so only optimize same-origin images; leave external ones as-is.
+    let sameOrigin = false;
+    try {
+      sameOrigin = new URL(img.src, window.location.href).origin === window.location.origin;
+    } catch { sameOrigin = false; }
+    if (sameOrigin) {
+      const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
+      img.closest('picture').replaceWith(optimizedPic);
+    }
   });
   block.textContent = '';
   block.append(ul);
