@@ -1,0 +1,25 @@
+{
+  "variantName": "cards-article",
+  "baseBlock": "cards",
+  "canonicalModel": "collection",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "article-grid",
+    "imagePattern": "image-top",
+    "structure": "image + uppercase title + one-line description"
+  },
+  "contentPattern": "Each row is one card: cell 1 image on top, cell 2 body (uppercase title + short one-line description). Rendered as a responsive grid (1 col mobile, 2 cols tablet, 4 cols desktop).",
+  "usage": {
+    "pagesUsing": [
+      "/us/en/adventures",
+      "/us/en/magazine"
+    ],
+    "reuseCount": 2,
+    "lastUsed": "2026-09-09T13:00:12.345Z"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "cards-article"
+  ]
+}

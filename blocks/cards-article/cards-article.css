@@ -1,0 +1,79 @@
+/* Block: cards-article — visual design extracted from wknd.site .image-list.list */
+
+.cards-article > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px 14px;
+}
+
+.cards-article > ul > li {
+  background-color: var(--background-color);
+}
+
+/* image on top — source rendered 260x200 (ratio 13/10), object-fit cover */
+.cards-article .cards-article-card-image {
+  line-height: 0;
+}
+
+.cards-article .cards-article-card-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 13 / 10;
+  object-fit: cover;
+}
+
+/*
+ * EDS decorateMain wraps the cell contents in a single <p>, so the title <a>
+ * and the description text node share one paragraph. The <p> carries the
+ * description styling; the <a> is promoted to a block and styled as the title.
+ */
+.cards-article .cards-article-card-body {
+  margin: 9px 0 0;
+}
+
+.cards-article .cards-article-card-body p {
+  margin: 0;
+}
+
+/* title link — 18px, semibold, uppercase, dark; sits above the description */
+.cards-article .cards-article-card-body p a {
+  display: block;
+  color: var(--text-color); /* #202020 */
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.cards-article .cards-article-card-body p a:hover {
+  text-decoration: none;
+}
+
+/* description — 14px, uppercase, grey, clamped to a single line with ellipsis */
+.cards-article .cards-article-card-description {
+  display: block;
+  margin-top: 16px;
+  color: #696969;
+  font-size: var(--body-font-size-xs); /* 14px */
+  line-height: 21px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (width >= 600px) {
+  .cards-article > ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 900px) {
+  .cards-article > ul {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "variantName": "cards-contributor",
+  "baseBlock": "cards",
+  "canonicalModel": "collection",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "comfortable",
+    "purpose": "team-grid",
+    "imagePattern": "circular-portrait",
+    "structure": "circular portrait + name + role + social links"
+  },
+  "contentPattern": "Each row is one contributor card: cell 1 circular portrait image, cell 2 body (name + role + social icon links). Rendered as a centered responsive grid (1 col mobile, 2 cols tablet, 4 cols desktop).",
+  "usage": "People/team grid of contributor cards with a circular portrait, name, role, and social links. Used on the About Us page.",
+  "options": [],
+  "memberVariantIds": ["cards-contributor"]
+}

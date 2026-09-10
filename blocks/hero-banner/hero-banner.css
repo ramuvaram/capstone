@@ -1,0 +1,119 @@
+/* hero-banner — WKND "imagebottom"/"hero" teaser
+ * Full-bleed image on top, white content card below.
+ * On desktop the card overlaps the image upward. Left-aligned.
+ * Values extracted from source computed styles. */
+
+/* full-width: cancel the section content max-width so the image bleeds edge to edge */
+.hero-banner-container .hero-banner-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.hero-banner {
+  position: relative;
+  display: block;
+  color: var(--text-color);
+}
+
+/* --- image row (first row) --- */
+.hero-banner > div:first-child,
+.hero-banner > div:first-child > div {
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+.hero-banner picture {
+  display: block;
+}
+
+.hero-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+/* --- content row (second row) --- */
+/* stylelint-disable-next-line no-descending-specificity */
+.hero-banner > div:last-child {
+  margin: 0;
+  padding: 0;
+}
+
+/* white content card */
+.hero-banner .hero-banner-content {
+  position: relative;
+  z-index: 1;
+  display: flow-root; /* contain child margins so the card shows its own whitespace */
+  background-color: var(--background-color);
+  padding: 0 14px;
+  text-align: left;
+}
+
+.hero-banner .hero-banner-content h2 {
+  margin: 18px 0 0;
+  font-family: var(--heading-font-family);
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 54px;
+  color: var(--text-color);
+}
+
+.hero-banner .hero-banner-content p {
+  margin: 0;
+  font-size: var(--body-font-size-m);
+  line-height: 31.5px;
+  color: var(--text-color);
+}
+
+/* CTA — source renders a solid yellow button (EDS may not auto-decorate it) */
+.hero-banner .hero-banner-content p:last-child {
+  margin: 18px 0;
+}
+
+.hero-banner .hero-banner-content a,
+.hero-banner .hero-banner-content a.button:any-link {
+  display: inline-block;
+  border: 0;
+  border-radius: 0;
+  padding: 14px 35px;
+  background-color: var(--brand-color);
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.hero-banner .hero-banner-content a:hover,
+.hero-banner .hero-banner-content a.button:any-link:hover {
+  background-color: var(--text-color);
+  color: var(--brand-color);
+  text-decoration: none;
+}
+
+/* --- no-image variant --- */
+.hero-banner.no-image .hero-banner-content {
+  background-color: transparent;
+  padding: 0;
+}
+
+/* --- desktop --- */
+@media (width >= 900px) {
+  .hero-banner img {
+    aspect-ratio: 2 / 1;
+  }
+
+  .hero-banner .hero-banner-content {
+    margin: -180px 44px 0;
+    padding: 0 28px;
+  }
+
+  .hero-banner.no-image .hero-banner-content {
+    margin: 0;
+    padding: 0;
+  }
+}

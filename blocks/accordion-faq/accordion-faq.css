@@ -1,0 +1,92 @@
+/*
+ * accordion-faq — visual design migrated from wknd.site FAQ accordion (cmp-accordion).
+ * Decorated DOM:
+ *   .accordion-faq
+ *     details.accordion-faq-item
+ *       summary.accordion-faq-item-label  > p   (question)
+ *       div.accordion-faq-item-body        > p   (answer)
+ * Values extracted from source computed styles.
+ */
+
+.accordion-faq {
+  color: var(--text-color); /* rgb(32, 32, 32) */
+  font-family: var(--body-font-family);
+  font-size: 18px;
+}
+
+/* accordion item — flush rows; the summary bottom border is the separator */
+.accordion-faq .accordion-faq-item {
+  margin: 0;
+  border: 0;
+}
+
+/* question row (summary acts as the cmp-accordion__button) */
+.accordion-faq .accordion-faq-item-label {
+  position: relative;
+  display: block;
+  padding: 13.33px;
+  padding-right: 48px; /* room for the +/- indicator */
+  border-bottom: 2px solid rgb(235 235 235);
+  background-color: transparent;
+  cursor: pointer;
+  list-style: none;
+}
+
+.accordion-faq .accordion-faq-item-label::-webkit-details-marker {
+  display: none;
+}
+
+/* title text (cmp-accordion__title) */
+.accordion-faq .accordion-faq-item-label p {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  color: rgb(0 0 0);
+  text-transform: uppercase;
+}
+
+/* +/- indicator (cmp-accordion__icon) — thin plus, black, right-aligned */
+.accordion-faq .accordion-faq-item-label::before,
+.accordion-faq .accordion-faq-item-label::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  background-color: rgb(0 0 0);
+}
+
+/* horizontal bar */
+.accordion-faq .accordion-faq-item-label::before {
+  width: 18px;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+/* vertical bar (hidden when open → turns "+" into "−") */
+.accordion-faq .accordion-faq-item-label::after {
+  right: 26px;
+  width: 2px;
+  height: 18px;
+  transform: translateY(-50%);
+}
+
+.accordion-faq .accordion-faq-item[open] .accordion-faq-item-label::after {
+  display: none;
+}
+
+/* answer panel (cmp-accordion__panel) */
+.accordion-faq .accordion-faq-item-body {
+  padding: 7px 0 0 7px;
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--text-color);
+}
+
+.accordion-faq .accordion-faq-item-body p {
+  margin: 0 0 13.5px;
+  font-size: 14px;
+  line-height: 24.5px;
+  text-align: justify;
+}

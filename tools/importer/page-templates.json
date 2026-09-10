@@ -1,0 +1,225 @@
+{
+  "metadata": {
+    "projectType": "da"
+  },
+  "templates": [
+    {
+      "name": "about-us",
+      "urls": [
+        "https://wknd.site/us/en/about-us.html",
+        "https://wknd.site/us/en/magazine.html"
+      ],
+      "representativeUrl": "https://wknd.site/us/en/about-us.html",
+      "description": "WKND about-us (contributor grids) and magazine listing (featured article + article grid).",
+      "blocks": [
+        {
+          "name": "cards-contributor",
+          "instances": [".experiencefragment.cmp-experience-fragment--contributor"]
+        },
+        {
+          "name": "columns-featured",
+          "instances": [".teaser.cmp-teaser--featured"]
+        },
+        {
+          "name": "cards-article",
+          "instances": [".image-list.list"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "s1",
+          "name": "About / Contributors",
+          "selector": ["main.container.responsivegrid.cmp-layout-container--fixed"],
+          "style": null,
+          "blocks": ["cards-contributor"],
+          "defaultContent": [".title.cmp-title--underline"]
+        }
+      ],
+      "urlPattern": "/us/en/*"
+    },
+    {
+      "name": "adventures",
+      "urls": [
+        "https://wknd.site/us/en/adventures/bali-surf-camp.html"
+      ],
+      "representativeUrl": "https://wknd.site/us/en/adventures/bali-surf-camp.html",
+      "description": "WKND adventure detail page: image gallery carousel, adventure spec list, and tabbed content.",
+      "blocks": [
+        {
+          "name": "carousel-gallery",
+          "instances": [".carousel.cmp-carousel--mini"]
+        },
+        {
+          "name": "tabs-detail",
+          "instances": [".tabs.panelcontainer"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "s1",
+          "name": "Breadcrumb",
+          "selector": [".breadcrumb.cmp-breadcrumb--fixed"],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [".breadcrumb.cmp-breadcrumb--fixed"]
+        },
+        {
+          "id": "s2",
+          "name": "Hero image carousel",
+          "selector": [".carousel.cmp-carousel--mini"],
+          "style": null,
+          "blocks": ["carousel-gallery"],
+          "defaultContent": []
+        },
+        {
+          "id": "s3",
+          "name": "Adventure detail body",
+          "selector": ["main.container.responsivegrid.cmp-layout-container--fixed"],
+          "style": null,
+          "blocks": ["tabs-detail"],
+          "defaultContent": [".title.cmp-title--underline"]
+        }
+      ],
+      "urlPattern": "/us/en/adventures/*"
+    },
+    {
+      "name": "adventures-2",
+      "urls": [
+        "https://wknd.site/us/en/adventures.html"
+      ],
+      "representativeUrl": "https://wknd.site/us/en/adventures.html",
+      "description": "WKND adventures listing page: hero promo banner and a tabbed category filter with adventure card grids.",
+      "blocks": [
+        {
+          "name": "hero-banner",
+          "instances": [".teaser.cmp-teaser--hero"]
+        },
+        {
+          "name": "tabs-detail",
+          "instances": [".tabs.panelcontainer"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "s1",
+          "name": "Hero",
+          "selector": [".teaser.cmp-teaser--hero"],
+          "style": null,
+          "blocks": ["hero-banner"],
+          "defaultContent": []
+        },
+        {
+          "id": "s2",
+          "name": "Current Adventures",
+          "selector": ["main.container.responsivegrid.cmp-layout-container--fixed"],
+          "style": null,
+          "blocks": ["tabs-detail"],
+          "defaultContent": [".title.cmp-title--underline"]
+        }
+      ],
+      "urlPattern": "/us/en/*"
+    },
+    {
+      "name": "faqs",
+      "urls": [
+        "https://wknd.site/us/en/faqs.html"
+      ],
+      "representativeUrl": "https://wknd.site/us/en/faqs.html",
+      "description": "WKND FAQ page: intro content and an expandable Q&A accordion, plus a contact block.",
+      "blocks": [
+        {
+          "name": "accordion-faq",
+          "instances": [".accordion.panelcontainer"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "s1",
+          "name": "FAQ content",
+          "selector": ["#container-0e3ddb0dd6"],
+          "style": null,
+          "blocks": ["accordion-faq"],
+          "defaultContent": [".title.cmp-title--underline"]
+        },
+        {
+          "id": "s2",
+          "name": "Need more help",
+          "selector": ["#container-ef2c6c2ddf"],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [".cmp-title__text"]
+        }
+      ],
+      "urlPattern": "/us/en/*"
+    },
+    {
+      "name": "home",
+      "urls": [
+        "https://wknd.site/us/en.html"
+      ],
+      "representativeUrl": "https://wknd.site/us/en.html",
+      "description": "WKND homepage: hero carousel, featured article, article grids, and a promo banner.",
+      "blocks": [
+        {
+          "name": "carousel-hero",
+          "instances": [".carousel.cmp-carousel--hero"]
+        },
+        {
+          "name": "columns-featured",
+          "instances": [".teaser.cmp-teaser--featured"]
+        },
+        {
+          "name": "cards-article",
+          "instances": [".image-list.list"]
+        },
+        {
+          "name": "hero-banner",
+          "instances": [".teaser.cmp-teaser--imagebottom"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "s1",
+          "name": "Hero carousel",
+          "selector": [".carousel.cmp-carousel--hero"],
+          "style": null,
+          "blocks": ["carousel-hero"],
+          "defaultContent": []
+        },
+        {
+          "id": "s2",
+          "name": "Featured article",
+          "selector": [".teaser.cmp-teaser--featured"],
+          "style": "grey",
+          "blocks": ["columns-featured"],
+          "defaultContent": []
+        },
+        {
+          "id": "s3",
+          "name": "Recent Articles",
+          "selector": [".image-list.list"],
+          "style": null,
+          "blocks": ["cards-article"],
+          "defaultContent": [".title.cmp-title--underline", ".cmp-buildingblock--btn-list"]
+        },
+        {
+          "id": "s4",
+          "name": "Next Adventures banner",
+          "selector": [".teaser.cmp-teaser--imagebottom"],
+          "style": null,
+          "blocks": ["hero-banner"],
+          "defaultContent": []
+        },
+        {
+          "id": "s5",
+          "name": "Where do you want to go?",
+          "selector": [".image-list.list"],
+          "style": null,
+          "blocks": ["cards-article"],
+          "defaultContent": [".title.cmp-title--underline", ".cmp-buildingblock--btn-list"]
+        }
+      ],
+      "urlPattern": "/us/*"
+    }
+  ]
+}
