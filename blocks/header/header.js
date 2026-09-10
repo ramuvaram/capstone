@@ -2,10 +2,66 @@
 // Content-first: all copy/links/images live in /content/nav.plain.html; this module
 // reads that DOM and builds layout + interactive controls (search, locale toggle).
 
-// eslint-disable-next-line import/no-unresolved
-import { decorateIcons } from '../../scripts/aem.js';
-
 const isDesktop = window.matchMedia('(min-width: 900px)');
+
+// Country name → repo flag icon. EDS strips authored <img>/icon-spans from the
+// nav fragment during markdown conversion, so the logo and flags are injected
+// here from /icons/ (served directly from the repo).
+const FLAGS = {
+  'united states': '/icons/flag-us.svg',
+  canada: '/icons/flag-ca.svg',
+  switzerland: '/icons/flag-ch.svg',
+  germany: '/icons/flag-de.svg',
+  france: '/icons/flag-fr.svg',
+  spain: '/icons/flag-es.svg',
+  italy: '/icons/flag-it.svg',
+};
+
+/** Create a flag <img> for a country name, or null if unknown. */
+function makeFlag(name, size = 24) {
+  const src = FLAGS[(name || '').trim().toLowerCase()];
+  if (!src) return null;
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = '';
+  img.width = size;
+  img.height = size;
+  return img;
+}
+
+/**
+ * Re-inject the logo and locale flags the fragment can't carry. Matches by
+ * structure/text: the brand logo into the first section's link, the toggle flag
+ * into the #langNavToggle link, and each country flag into its locale row.
+ */
+function injectNavIcons(tmp) {
+  const sections = [...tmp.querySelectorAll(':scope > div')];
+  // Brand logo: first section, the (image-less) link around the wordmark.
+  const brandLink = sections[0]?.querySelector('a');
+  if (brandLink && !brandLink.querySelector('img')) {
+    const logo = document.createElement('img');
+    logo.src = '/icons/wknd-logo.svg';
+    logo.alt = 'WKND Logo';
+    logo.width = 239;
+    logo.height = 89;
+    brandLink.textContent = '';
+    brandLink.append(logo);
+  }
+  // Locale toggle flag: the #langNavToggle link (its text label stays in the <p>).
+  const toggleLink = tmp.querySelector('a[href="#langNavToggle"]');
+  if (toggleLink && !toggleLink.querySelector('img')) {
+    toggleLink.append(makeFlag('united states', 25));
+  }
+  // Country-row flags: each locale <li> begins with the country name.
+  const localeList = sections[sections.length - 1]?.querySelector('ul');
+  localeList?.querySelectorAll(':scope > li').forEach((row) => {
+    if (row.querySelector('img')) return;
+    const links = row.querySelector('ul');
+    const name = row.textContent.replace(links ? links.textContent : '', '').trim();
+    const img = makeFlag(name);
+    if (img) row.querySelector('p')?.prepend(img);
+  });
+}
 
 /**
  * Fetch the nav fragment (metadata-independent dual-fetch): the root path
@@ -21,19 +77,10 @@ async function fetchNav() {
   const html = await resp.text();
   const tmp = document.createElement('div');
   tmp.innerHTML = html;
-  // Logos/flags are authored as EDS icon spans (<span class="icon icon-name">);
-  // decorateIcons turns them into <img src="/icons/name.svg"> served straight
-  // from the repo. Authored <img> in a fragment goes through the media pipeline
-  // and resolves to about:error, so icons are the reliable path here.
-  decorateIcons(tmp);
-  // Relative image paths in the fragment (images/foo.svg) would resolve against
-  // the current page URL; rewrite to a root-absolute path so they load on any page.
-  tmp.querySelectorAll('img[src]').forEach((img) => {
-    const src = img.getAttribute('src');
-    if (src && !/^(https?:)?\//.test(src) && !src.startsWith('data:')) {
-      img.setAttribute('src', `/${src.replace(/^\.?\/*/, '')}`);
-    }
-  });
+  // The logo and locale flags don't survive the DA→EDS markdown conversion
+  // (authored <img> becomes about:error; icon-spans get stripped), so inject
+  // them here from the repo /icons/ folder, which serves directly.
+  injectNavIcons(tmp);
   // Internal links authored with a .html extension 404 on EDS (which serves
   // extensionless URLs); strip .html from same-site paths. Leave external
   // (https://) links and in-page anchors (#…) untouched.
