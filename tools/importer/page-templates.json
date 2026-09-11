@@ -14,25 +14,37 @@
       "blocks": [
         {
           "name": "cards-contributor",
-          "instances": [".experiencefragment.cmp-experience-fragment--contributor"]
+          "instances": [
+            ".experiencefragment.cmp-experience-fragment--contributor"
+          ]
         },
         {
           "name": "columns-featured",
-          "instances": [".teaser.cmp-teaser--featured"]
+          "instances": [
+            ".teaser.cmp-teaser--featured"
+          ]
         },
         {
           "name": "cards-article",
-          "instances": [".image-list.list"]
+          "instances": [
+            ".image-list.list"
+          ]
         }
       ],
       "sections": [
         {
           "id": "s1",
           "name": "About / Contributors",
-          "selector": ["main.container.responsivegrid.cmp-layout-container--fixed"],
+          "selector": [
+            "main.container.responsivegrid.cmp-layout-container--fixed"
+          ],
           "style": null,
-          "blocks": ["cards-contributor"],
-          "defaultContent": [".title.cmp-title--underline"]
+          "blocks": [
+            "cards-contributor"
+          ],
+          "defaultContent": [
+            ".title.cmp-title--underline"
+          ]
         }
       ],
       "urlPattern": "/us/en/*"
@@ -40,44 +52,77 @@
     {
       "name": "adventures",
       "urls": [
-        "https://wknd.site/us/en/adventures/bali-surf-camp.html"
+        "https://wknd.site/us/en/adventures/bali-surf-camp.html",
+        "https://wknd.site/us/en/adventures/beervana-portland.html",
+        "https://wknd.site/us/en/adventures/climbing-new-zealand.html",
+        "https://wknd.site/us/en/adventures/colorado-rock-climbing.html",
+        "https://wknd.site/us/en/adventures/cycling-southern-utah.html",
+        "https://wknd.site/us/en/adventures/cycling-tuscany.html",
+        "https://wknd.site/us/en/adventures/downhill-skiing-wyoming.html",
+        "https://wknd.site/us/en/adventures/gastronomic-marais-tour.html",
+        "https://wknd.site/us/en/adventures/napa-wine-tasting.html",
+        "https://wknd.site/us/en/adventures/riverside-camping-australia.html",
+        "https://wknd.site/us/en/adventures/ski-touring-mont-blanc.html",
+        "https://wknd.site/us/en/adventures/surf-camp-costa-rica.html",
+        "https://wknd.site/us/en/adventures/tahoe-skiing.html",
+        "https://wknd.site/us/en/adventures/west-coast-cycling.html",
+        "https://wknd.site/us/en/adventures/whistler-mountain-biking.html",
+        "https://wknd.site/us/en/adventures/yosemite-backpacking.html"
       ],
       "representativeUrl": "https://wknd.site/us/en/adventures/bali-surf-camp.html",
       "description": "WKND adventure detail page: image gallery carousel, adventure spec list, and tabbed content.",
       "blocks": [
         {
           "name": "carousel-gallery",
-          "instances": [".carousel.cmp-carousel--mini"]
+          "instances": [
+            ".carousel.cmp-carousel--mini"
+          ]
         },
         {
           "name": "tabs-detail",
-          "instances": [".tabs.panelcontainer"]
+          "instances": [
+            ".tabs.panelcontainer"
+          ]
         }
       ],
       "sections": [
         {
           "id": "s1",
           "name": "Breadcrumb",
-          "selector": [".breadcrumb.cmp-breadcrumb--fixed"],
+          "selector": [
+            ".breadcrumb.cmp-breadcrumb--fixed"
+          ],
           "style": null,
           "blocks": [],
-          "defaultContent": [".breadcrumb.cmp-breadcrumb--fixed"]
+          "defaultContent": [
+            ".breadcrumb.cmp-breadcrumb--fixed"
+          ]
         },
         {
           "id": "s2",
           "name": "Hero image carousel",
-          "selector": [".carousel.cmp-carousel--mini"],
+          "selector": [
+            ".carousel.cmp-carousel--mini"
+          ],
           "style": null,
-          "blocks": ["carousel-gallery"],
+          "blocks": [
+            "carousel-gallery"
+          ],
           "defaultContent": []
         },
         {
           "id": "s3",
           "name": "Adventure detail body",
-          "selector": ["main.container.responsivegrid.cmp-layout-container--fixed"],
+          "selector": [
+            "main.container.responsivegrid.cmp-layout-container--fixed"
+          ],
           "style": null,
-          "blocks": ["tabs-detail"],
-          "defaultContent": [".title.cmp-title--underline"]
+          "blocks": [
+            "tabs-detail"
+          ],
+          "defaultContent": [
+            ".title.cmp-title--underline"
+          ]
         }
       ],
       "urlPattern": "/us/en/adventures/*"
@@ -92,29 +137,43 @@
       "blocks": [
         {
           "name": "hero-banner",
-          "instances": [".teaser.cmp-teaser--hero"]
+          "instances": [
+            ".teaser.cmp-teaser--hero"
+          ]
         },
         {
           "name": "tabs-detail",
-          "instances": [".tabs.panelcontainer"]
+          "instances": [
+            ".tabs.panelcontainer"
+          ]
         }
       ],
       "sections": [
         {
           "id": "s1",
           "name": "Hero",
-          "selector": [".teaser.cmp-teaser--hero"],
+          "selector": [
+            ".teaser.cmp-teaser--hero"
+          ],
           "style": null,
-          "blocks": ["hero-banner"],
+          "blocks": [
+            "hero-banner"
+          ],
           "defaultContent": []
         },
         {
           "id": "s2",
           "name": "Current Adventures",
-          "selector": ["main.container.responsivegrid.cmp-layout-container--fixed"],
+          "selector": [
+            "main.container.responsivegrid.cmp-layout-container--fixed"
+          ],
           "style": null,
-          "blocks": ["tabs-detail"],
-          "defaultContent": [".title.cmp-title--underline"]
+          "blocks": [
+            "tabs-detail"
+          ],
+          "defaultContent": [
+            ".title.cmp-title--underline"
+          ]
         }
       ],
       "urlPattern": "/us/en/*"
@@ -129,25 +188,37 @@
       "blocks": [
         {
           "name": "accordion-faq",
-          "instances": [".accordion.panelcontainer"]
+          "instances": [
+            ".accordion.panelcontainer"
+          ]
         }
       ],
       "sections": [
         {
           "id": "s1",
           "name": "FAQ content",
-          "selector": ["#container-0e3ddb0dd6"],
+          "selector": [
+            "#container-0e3ddb0dd6"
+          ],
           "style": null,
-          "blocks": ["accordion-faq"],
-          "defaultContent": [".title.cmp-title--underline"]
+          "blocks": [
+            "accordion-faq"
+          ],
+          "defaultContent": [
+            ".title.cmp-title--underline"
+          ]
         },
         {
           "id": "s2",
           "name": "Need more help",
-          "selector": ["#container-ef2c6c2ddf"],
+          "selector": [
+            "#container-ef2c6c2ddf"
+          ],
           "style": null,
           "blocks": [],
-          "defaultContent": [".cmp-title__text"]
+          "defaultContent": [
+            ".cmp-title__text"
+          ]
         }
       ],
       "urlPattern": "/us/en/*"
@@ -162,61 +233,95 @@
       "blocks": [
         {
           "name": "carousel-hero",
-          "instances": [".carousel.cmp-carousel--hero"]
+          "instances": [
+            ".carousel.cmp-carousel--hero"
+          ]
         },
         {
           "name": "columns-featured",
-          "instances": [".teaser.cmp-teaser--featured"]
+          "instances": [
+            ".teaser.cmp-teaser--featured"
+          ]
         },
         {
           "name": "cards-article",
-          "instances": [".image-list.list"]
+          "instances": [
+            ".image-list.list"
+          ]
         },
         {
           "name": "hero-banner",
-          "instances": [".teaser.cmp-teaser--imagebottom"]
+          "instances": [
+            ".teaser.cmp-teaser--imagebottom"
+          ]
         }
       ],
       "sections": [
         {
           "id": "s1",
           "name": "Hero carousel",
-          "selector": [".carousel.cmp-carousel--hero"],
+          "selector": [
+            ".carousel.cmp-carousel--hero"
+          ],
           "style": null,
-          "blocks": ["carousel-hero"],
+          "blocks": [
+            "carousel-hero"
+          ],
           "defaultContent": []
         },
         {
           "id": "s2",
           "name": "Featured article",
-          "selector": [".teaser.cmp-teaser--featured"],
+          "selector": [
+            ".teaser.cmp-teaser--featured"
+          ],
           "style": "grey",
-          "blocks": ["columns-featured"],
+          "blocks": [
+            "columns-featured"
+          ],
           "defaultContent": []
         },
         {
           "id": "s3",
           "name": "Recent Articles",
-          "selector": [".image-list.list"],
+          "selector": [
+            ".image-list.list"
+          ],
           "style": null,
-          "blocks": ["cards-article"],
-          "defaultContent": [".title.cmp-title--underline", ".cmp-buildingblock--btn-list"]
+          "blocks": [
+            "cards-article"
+          ],
+          "defaultContent": [
+            ".title.cmp-title--underline",
+            ".cmp-buildingblock--btn-list"
+          ]
         },
         {
           "id": "s4",
           "name": "Next Adventures banner",
-          "selector": [".teaser.cmp-teaser--imagebottom"],
+          "selector": [
+            ".teaser.cmp-teaser--imagebottom"
+          ],
           "style": null,
-          "blocks": ["hero-banner"],
+          "blocks": [
+            "hero-banner"
+          ],
           "defaultContent": []
         },
         {
           "id": "s5",
           "name": "Where do you want to go?",
-          "selector": [".image-list.list"],
+          "selector": [
+            ".image-list.list"
+          ],
           "style": null,
-          "blocks": ["cards-article"],
-          "defaultContent": [".title.cmp-title--underline", ".cmp-buildingblock--btn-list"]
+          "blocks": [
+            "cards-article"
+          ],
+          "defaultContent": [
+            ".title.cmp-title--underline",
+            ".cmp-buildingblock--btn-list"
+          ]
         }
       ],
       "urlPattern": "/us/*"
