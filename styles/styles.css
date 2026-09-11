@@ -384,7 +384,7 @@ main > .section {
 }
 
 main > .section > div {
-  max-width: 1200px;
+  max-width: 1136px;
   margin: auto;
   padding: 0 24px;
 }
@@ -462,6 +462,7 @@ main .article-column blockquote p {
   flex: 1 1 auto;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .article-byline-text p {
   margin: 0;
 }
@@ -480,6 +481,7 @@ main .article-column blockquote p {
   object-fit: cover;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .article-byline h2 {
   margin: 0 0 4px;
   font-size: var(--heading-font-size-l);
@@ -533,6 +535,7 @@ main .article-column blockquote p {
    link here is explicitly overridden to dark/light, so this is the one spot
    that still shows the base link color. Matched literally rather than
    changing --link-color itself, which would recolor links sitewide. */
+/* stylelint-disable-next-line no-descending-specificity */
 .share-story h3 a {
   color: rgb(0 69 255);
 }
@@ -543,6 +546,7 @@ main .article-column blockquote p {
   padding: 0;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .share-story li {
   padding: 0 0 4px 16px;
   margin: 0 0 24px;
@@ -572,7 +576,7 @@ main .article-column blockquote p {
 
 @media (width >= 900px) {
   main .article-layout {
-    max-width: 1200px;
+    max-width: 1136px;
 
     /* .article-layout is main's own direct child (it replaces what were
        several main > .section elements), so it needs its own bottom margin —
