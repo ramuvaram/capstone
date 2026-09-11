@@ -187,6 +187,175 @@ function stripHtmlExtensions(main) {
   });
 }
 
+// WKND adventure detail pages (e.g. /us/en/adventures/bali-surf-camp) are
+// authored from a fixed content-fragment model: a spec list (Activity/
+// Adventure Type/Trip Length/Group Size/Difficulty/Price) and three tabs
+// (Overview/Itinerary/What to Bring). On at least one page that content
+// reached the browser as flat prose instead of block markup (no
+// carousel-gallery/columns-details/tabs-content divs at all — compare
+// this page's .plain.html against the same page on the reference
+// implementation). rebuildAdventureDetail() below reconstructs the blocks
+// client-side so the page still renders like the reference site; it's a
+// no-op (and cheap to check) on any page that isn't in this broken shape,
+// including this same page once/if the authored content is repaired.
+const ADVENTURE_STAT_LABELS = ['Activity', 'Adventure Type', 'Trip Length', 'Group Size', 'Difficulty', 'Price'];
+const ADVENTURE_TAB_LABELS = ['Overview', 'Itinerary', 'What to Bring'];
+const ADVENTURE_METADATA_LABELS = ['Title', 'Description'];
+
+/**
+ * Find the adventure spec <ul> — every <li> is exactly a Label/Value <p> pair
+ * whose label is one of the known content-fragment field names.
+ * @param {Element} main
+ * @returns {Element|undefined}
+ */
+function findAdventureStatsList(main) {
+  return [...main.querySelectorAll('ul')].find((ul) => {
+    const items = [...ul.children].filter((c) => c.tagName === 'LI');
+    return items.length > 0 && items.every((li) => {
+      const ps = li.querySelectorAll(':scope > p');
+      return ps.length === 2 && ADVENTURE_STAT_LABELS.includes(ps[0].textContent.trim());
+    });
+  });
+}
+
+/**
+ * Convert the flat spec <ul> into a columns-details block (one row per
+ * label/value pair) so blocks/columns-details can style it.
+ * @param {Element} ul
+ */
+function buildColumnsDetails(ul) {
+  const block = document.createElement('div');
+  block.className = 'columns-details';
+  [...ul.children].forEach((li) => {
+    const row = document.createElement('div');
+    li.querySelectorAll(':scope > p').forEach((p) => {
+      const cell = document.createElement('div');
+      cell.append(p); // moves the <p>, no need to clone
+      row.append(cell);
+    });
+    block.append(row);
+  });
+  ul.replaceWith(block);
+}
+
+/**
+ * Wrap the lead image (the <p><picture> immediately before the H1) as a
+ * single-slide carousel-gallery block, matching how the reference site
+ * authors the hero image.
+ * @param {Element} h1
+ */
+function buildCarouselGallery(h1) {
+  if (!h1) return;
+  let node = h1.previousElementSibling;
+  let heroP;
+  while (node) {
+    if (node.tagName === 'P' && node.querySelector(':scope > picture')) {
+      heroP = node;
+      break;
+    }
+    node = node.previousElementSibling;
+  }
+  if (!heroP) return;
+
+  const block = document.createElement('div');
+  block.className = 'carousel-gallery';
+  const row = document.createElement('div');
+  const imageCol = document.createElement('div');
+  imageCol.append(heroP.querySelector('picture'));
+  row.append(imageCol, document.createElement('div'));
+  block.append(row);
+  heroP.replaceWith(block);
+}
+
+/**
+ * The migrated content repeats the page title as an <h3> (hidden by
+ * blocks/tabs-content/tabs-content.css inside each tab panel in the reference
+ * source); here it instead landed as a stray heading outside any panel.
+ * Since it's decorative-only and always hidden, just drop it.
+ * @param {Element} main
+ * @param {Element} h1
+ */
+function removeDuplicateTitleHeading(main, h1) {
+  if (!h1) return;
+  const h1Text = h1.textContent.trim();
+  main.querySelectorAll('h3').forEach((h3) => {
+    if (h3.textContent.trim() === h1Text) h3.remove();
+  });
+}
+
+/**
+ * Group the Overview/Itinerary/What to Bring marker paragraphs and the
+ * content following each of them into a tabs-content block.
+ * @param {Element} container The flat content's direct parent
+ */
+function buildTabsContent(container) {
+  const isMetadataMarker = (el) => el.tagName === 'P'
+    && ADVENTURE_METADATA_LABELS.includes(el.textContent.trim());
+
+  const markers = [...container.children].filter(
+    (el) => el.tagName === 'P' && ADVENTURE_TAB_LABELS.includes(el.textContent.trim()),
+  );
+  if (!markers.length) return;
+
+  const block = document.createElement('div');
+  block.className = 'tabs-content';
+
+  markers.forEach((marker) => {
+    const row = document.createElement('div');
+    const labelCell = document.createElement('div');
+    labelCell.append(marker.cloneNode(true));
+    const contentCell = document.createElement('div');
+
+    let node = marker.nextElementSibling;
+    while (node && !markers.includes(node) && !isMetadataMarker(node)) {
+      const next = node.nextElementSibling;
+      contentCell.append(node);
+      node = next;
+    }
+    row.append(labelCell, contentCell);
+    block.append(row);
+  });
+
+  markers[0].replaceWith(block);
+  markers.slice(1).forEach((m) => m.remove());
+}
+
+/**
+ * The migrated content leaves the page's own Title/Description
+ * content-fragment fields in the body (as trailing Label/Value <p> pairs) —
+ * they duplicate the H1/Overview copy already on the page and the reference
+ * site doesn't render them either, so drop them.
+ * @param {Element} container
+ */
+function removeLeakedMetadata(container) {
+  [...container.children]
+    .filter((el) => el.tagName === 'P' && ADVENTURE_METADATA_LABELS.includes(el.textContent.trim()))
+    .forEach((marker) => {
+      const value = marker.nextElementSibling;
+      marker.remove();
+      if (value) value.remove();
+    });
+}
+
+/**
+ * Entry point: detect the flattened adventure-detail shape and rebuild the
+ * carousel-gallery/columns-details/tabs-content blocks from it.
+ * @param {Element} main The main element
+ */
+function rebuildAdventureDetail(main) {
+  const statsList = findAdventureStatsList(main);
+  if (!statsList) return; // already block-structured (or not an adventure page)
+
+  const container = statsList.parentElement;
+  const h1 = container.querySelector('h1') || main.querySelector('h1');
+
+  removeDuplicateTitleHeading(container, h1);
+  buildCarouselGallery(h1);
+  buildColumnsDetails(statsList);
+  buildTabsContent(container);
+  removeLeakedMetadata(container);
+}
+
 /**
  * Detect the leading breadcrumb list (a short <ol> near the top of the page
  * whose items are links plus a trailing current-page label) and tag it so CSS
@@ -217,6 +386,7 @@ function decorateBreadcrumb(main) {
 export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
+  rebuildAdventureDetail(main);
   decorateSections(main);
   decorateSectionMetadata(main);
   decorateBlocks(main);
@@ -250,6 +420,44 @@ async function loadEager(doc) {
 }
 
 /**
+ * Regroup the (by now decorated) adventure-detail blocks built by
+ * rebuildAdventureDetail() into a two-column layout — spec/share sidebar on
+ * the left, tabs on the right — matching the reference site. Deferred until
+ * after loadSections so the blocks decorate normally in their original
+ * sections first; a no-op if rebuildAdventureDetail() didn't run.
+ * @param {Element} main The main element
+ */
+function decorateAdventureLayout(main) {
+  const detailsBlock = main.querySelector('.columns-details');
+  const tabsBlock = main.querySelector('.tabs-content');
+  if (!detailsBlock || !tabsBlock || detailsBlock.closest('.adventure-layout')) return;
+
+  const detailsWrap = detailsBlock.parentElement;
+  const tabsWrap = tabsBlock.parentElement;
+  const shareHeading = [...main.querySelectorAll('h5')]
+    .find((h) => /share this/i.test(h.textContent || ''));
+  const shareWrap = shareHeading?.parentElement;
+
+  const grid = document.createElement('div');
+  grid.className = 'adventure-layout';
+  const left = document.createElement('div');
+  left.className = 'adventure-details-col';
+  const right = document.createElement('div');
+  right.className = 'adventure-main-col';
+
+  detailsWrap.before(grid);
+  left.append(detailsBlock);
+  if (shareHeading) left.append(shareHeading);
+  right.append(tabsBlock);
+  grid.append(left, right);
+
+  // the wrapper divs decorateSections created for these are now empty
+  [detailsWrap, tabsWrap, shareWrap].forEach((wrap) => {
+    if (wrap && !wrap.children.length) wrap.remove();
+  });
+}
+
+/**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
  */
@@ -258,6 +466,7 @@ async function loadLazy(doc) {
 
   const main = doc.querySelector('main');
   await loadSections(main);
+  decorateAdventureLayout(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;

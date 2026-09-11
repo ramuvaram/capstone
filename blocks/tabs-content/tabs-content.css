@@ -1,0 +1,101 @@
+/* tabs-content — WKND cmp-tabs look: dark active tab, transparent inactive, no borders */
+
+/* tab list */
+.tabs-content .tabs-content-list {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0;
+  margin: 18px 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* tab buttons */
+.tabs-content .tabs-content-list button.tabs-content-tab {
+  flex: 0 1 auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 8px 16px;
+  background-color: transparent;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs); /* 14px */
+  font-weight: 400;
+  line-height: 21px;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  overflow: visible;
+  text-overflow: clip;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* active tab: dark bar, white text */
+.tabs-content .tabs-content-list button.tabs-content-tab[aria-selected="true"] {
+  background-color: var(--dark-color);
+  color: rgb(255 255 255);
+  cursor: default;
+}
+
+/* panels */
+.tabs-content .tabs-content-panel {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--text-color);
+}
+
+.tabs-content .tabs-content-panel[aria-hidden="true"] {
+  display: none;
+}
+
+/* panel rich-text typography (WKND: generous line-height body copy) */
+.tabs-content .tabs-content-panel h3 {
+  margin: 27px 0 13.5px;
+  border-bottom: 0;
+  padding-bottom: 0;
+  font-family: var(--heading-font-family);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 36px;
+  text-transform: none;
+  color: var(--text-color);
+}
+
+/* WKND hides the repeated panel title heading (each panel opens with a
+   duplicate "<Adventure Name>" h3 that the source renders as display:none) */
+.tabs-content .tabs-content-panel > div > h3:first-child {
+  display: none;
+}
+
+.tabs-content .tabs-content-panel p {
+  margin: 0 0 13.5px;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m); /* 18px */
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--text-color);
+}
+
+.tabs-content .tabs-content-panel ul {
+  margin: 0 0 13.5px;
+  font-size: var(--body-font-size-m);
+  line-height: 1.75;
+}
+
+/* panel image: full width of the panel */
+.tabs-content .tabs-content-panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 7px 0;
+}
+
+/* tab-label paragraphs inherit the tab button styling (not panel typography) */
+.tabs-content .tabs-content-list button.tabs-content-tab p {
+  margin: 0;
+  font: inherit;
+  text-transform: inherit;
+}

@@ -365,6 +365,22 @@ main > .section:first-of-type {
   }
 }
 
+/* Adventure detail page: spec/share sidebar beside the tabs, built by
+   decorateAdventureLayout() in scripts.js. Two-column on desktop only —
+   mobile stays stacked (the default document flow). */
+.adventure-details-col {
+  margin-bottom: 32px;
+}
+
+@media (width >= 900px) {
+  main .adventure-layout {
+    display: grid;
+    grid-template-columns: 291px minmax(0, 1fr);
+    column-gap: 48px;
+    align-items: start;
+  }
+}
+
 /* section metadata */
 main .section.light,
 main .section.highlight,

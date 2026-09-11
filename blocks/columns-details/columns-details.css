@@ -1,0 +1,39 @@
+/* columns-details — adventure attribute/spec panel (label/value pairs) */
+
+.columns-details {
+  font-family: var(--body-font-family);
+}
+
+/* Each row = one label/value pair. Grey accent bar on the left. */
+.columns-details > div {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 22.5px;
+  padding: 0 18px;
+  border-left: 5px solid var(--light-color);
+}
+
+/* Reset the auto <p> margins EDS adds inside the cells. */
+.columns-details > div > div > p {
+  margin: 0;
+}
+
+/* Label cell (first cell) */
+.columns-details > div > div:first-child p {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  text-transform: uppercase;
+  color: rgb(105 105 105);
+  padding-top: 12px;
+}
+
+/* Value cell (second cell) */
+.columns-details > div > div:last-child p {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  text-transform: uppercase;
+  color: var(--text-color);
+  padding-top: 7px;
+}
