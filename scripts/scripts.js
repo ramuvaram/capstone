@@ -601,6 +601,108 @@ function decorateBreadcrumb(main) {
 }
 
 /**
+ * Infer an article category ("magazine" | "adventures") from the links inside
+ * a static listing block, so the dynamic index query can be pointed at the
+ * same collection the authored cards came from.
+ * @param {Element} el
+ * @returns {string}
+ */
+function inferCategory(el) {
+  const counts = { magazine: 0, adventures: 0 };
+  el.querySelectorAll('a[href]').forEach((a) => {
+    const m = a.getAttribute('href').match(/\/(magazine|adventures)\//);
+    if (m) counts[m[1]] += 1;
+  });
+  if (counts.magazine === 0 && counts.adventures === 0) return '';
+  return counts.adventures > counts.magazine ? 'adventures' : 'magazine';
+}
+
+/**
+ * Tag the site's static `.cards-article` grids (homepage teasers, magazine
+ * "All Articles") so they can be enhanced from `query-index.json` later (see
+ * enhanceDynamicListings). This only records intent via data attributes — it
+ * never alters or removes the authored markup, so the static, fully-styled
+ * cards keep working as the fallback if the index is unavailable (e.g. not
+ * yet configured for this site — see scripts/articles.js) or JS fails.
+ *
+ * The curated single-teaser spotlight (`.columns-featured` "Featured
+ * Article") is left as authored — it's an editorial pick, not "newest
+ * article" — but its linked article is recorded so the dynamic grid in the
+ * same category can exclude it (avoiding a duplicate, as in the authored
+ * design). The category is inferred from the existing links, and results are
+ * scoped to the current page's locale.
+ * @param {Element} main
+ */
+function decorateDynamicListings(main) {
+  const path = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '');
+  const parts = path.split('/').filter(Boolean);
+  const locale = parts.length >= 2 ? `${parts[0]}/${parts[1]}` : '';
+  // Dedicated listing pages (…/magazine, …/adventures) show the whole
+  // collection; teaser grids elsewhere (e.g. the homepage) keep the authored
+  // card count as a limit so they stay compact.
+  const isListingPage = /\/(magazine|adventures)$/.test(path);
+
+  const spotlightPaths = {};
+  main.querySelectorAll('.columns-featured').forEach((spot) => {
+    const category = inferCategory(spot);
+    const href = spot.querySelector(`a[href*="/${category}/"]`)?.getAttribute('href');
+    if (category && href) {
+      spotlightPaths[category] = href.replace(/\.html?$/, '').replace(/\/$/, '');
+    }
+  });
+
+  main.querySelectorAll('.cards-article').forEach((grid) => {
+    const category = inferCategory(grid);
+    if (!category) return;
+    grid.dataset.dynamicCategory = category;
+    if (locale) grid.dataset.dynamicLocale = locale;
+    const authoredCount = grid.querySelectorAll(':scope > div').length;
+    if (!isListingPage && authoredCount) grid.dataset.dynamicLimit = String(authoredCount);
+    if (!isListingPage && spotlightPaths[category]) {
+      grid.dataset.dynamicExclude = spotlightPaths[category];
+    }
+  });
+}
+
+/**
+ * Enhance the tagged `.cards-article` grids from the query index, in place,
+ * after the static blocks have already decorated. Runs below the fold
+ * (loadLazy) so the hero/LCP render is never gated on the index fetch. If the
+ * index is empty/unavailable (e.g. not yet configured for this site), every
+ * grid is left exactly as authored — the static cards remain the fallback and
+ * nothing is emptied.
+ * @param {Element} main
+ */
+async function enhanceDynamicListings(main) {
+  const grids = [...main.querySelectorAll('[data-dynamic-category]')];
+  if (!grids.length) return;
+
+  const { fetchArticles, selectArticles, buildArticleCardItem } = await import('./articles.js');
+  const { createOptimizedPicture } = await import('./aem.js');
+  const articles = await fetchArticles();
+  if (!articles.length) return; // no index yet — keep the authored fallback
+
+  // Eager images: these grids are primary page content, and matching the
+  // authored layout matters more than deferring below-fold decode.
+  const makePicture = (src, alt) => createOptimizedPicture(src, alt, true, [{ width: '750' }]);
+
+  grids.forEach((grid) => {
+    const { dynamicCategory: category, dynamicLocale: locale = '' } = grid.dataset;
+    const limit = parseInt(grid.dataset.dynamicLimit, 10);
+    const exclude = grid.dataset.dynamicExclude;
+    const selected = selectArticles(articles, {
+      category, locale, exclude, limit: Number.isNaN(limit) ? Infinity : limit,
+    });
+    if (!selected.length) return; // nothing indexed for this scope — keep static
+
+    const ul = document.createElement('ul');
+    selected.forEach((a) => ul.append(buildArticleCardItem(a, makePicture)));
+    grid.textContent = '';
+    grid.append(ul);
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -610,6 +712,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   rebuildAdventureDetail(main);
   rebuildMagazineArticle(main);
+  decorateDynamicListings(main);
   decorateSections(main);
   decorateSectionMetadata(main);
   decorateBlocks(main);
@@ -691,6 +794,7 @@ async function loadLazy(doc) {
   await loadSections(main);
   decorateAdventureLayout(main);
   decorateMagazineLayout(main);
+  enhanceDynamicListings(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
