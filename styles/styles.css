@@ -528,6 +528,15 @@ main .article-column blockquote p {
   text-transform: uppercase;
 }
 
+/* The "Download PDF" heading link renders in the reference site's link-blue
+   (rgb(0 69 255)) rather than this repo's dark --link-color — every other
+   link here is explicitly overridden to dark/light, so this is the one spot
+   that still shows the base link color. Matched literally rather than
+   changing --link-color itself, which would recolor links sitewide. */
+.share-story h3 a {
+  color: rgb(0 69 255);
+}
+
 .share-story ul {
   list-style: none;
   margin: 0;
