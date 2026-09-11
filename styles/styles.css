@@ -573,7 +573,14 @@ main .article-column blockquote p {
 @media (width >= 900px) {
   main .article-layout {
     max-width: 1200px;
-    margin: 0 auto;
+
+    /* .article-layout is main's own direct child (it replaces what were
+       several main > .section elements), so it needs its own bottom margin —
+       otherwise the byline runs straight into the footer with no gap. The
+       generic `main > div { margin: 40px 16px }` rule gives it this on
+       mobile; restore the same 40px here since this rule's `margin: 0 auto`
+       (for horizontal centering) would otherwise zero it out. */
+    margin: 0 auto 40px;
     padding: 0 32px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 291px;
