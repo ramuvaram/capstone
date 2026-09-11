@@ -10,7 +10,7 @@
         "https://wknd.site/us/en/magazine.html"
       ],
       "representativeUrl": "https://wknd.site/us/en/about-us.html",
-      "description": "WKND about-us (contributor grids) and magazine listing (featured article + article grid).",
+      "description": "To be named in naming step",
       "blocks": [
         {
           "name": "cards-contributor",
@@ -133,7 +133,7 @@
         "https://wknd.site/us/en/adventures.html"
       ],
       "representativeUrl": "https://wknd.site/us/en/adventures.html",
-      "description": "WKND adventures listing page: hero promo banner and a tabbed category filter with adventure card grids.",
+      "description": "To be named in naming step",
       "blocks": [
         {
           "name": "hero-banner",
@@ -184,7 +184,7 @@
         "https://wknd.site/us/en/faqs.html"
       ],
       "representativeUrl": "https://wknd.site/us/en/faqs.html",
-      "description": "WKND FAQ page: intro content and an expandable Q&A accordion, plus a contact block.",
+      "description": "To be named in naming step",
       "blocks": [
         {
           "name": "accordion-faq",
@@ -229,7 +229,7 @@
         "https://wknd.site/us/en.html"
       ],
       "representativeUrl": "https://wknd.site/us/en.html",
-      "description": "WKND homepage: hero carousel, featured article, article grids, and a promo banner.",
+      "description": "To be named in naming step",
       "blocks": [
         {
           "name": "carousel-hero",
@@ -325,6 +325,84 @@
         }
       ],
       "urlPattern": "/us/*"
+    },
+    {
+      "name": "magazine",
+      "urls": [
+        "https://wknd.site/us/en/magazine/arctic-surfing.html",
+        "https://wknd.site/us/en/magazine/guide-la-skateparks.html",
+        "https://wknd.site/us/en/magazine/san-diego-surf.html",
+        "https://wknd.site/us/en/magazine/ski-touring.html",
+        "https://wknd.site/us/en/magazine/western-australia.html"
+      ],
+      "representativeUrl": "https://wknd.site/us/en/magazine/arctic-surfing.html",
+      "description": "WKND magazine article detail: lead image, title + byline + rich body, author credit, and a share/related-stories sidebar. All default content, no blocks.",
+      "blocks": [],
+      "sections": [
+        {
+          "id": "s1",
+          "name": "Lead image",
+          "selector": [
+            ".image.aem-GridColumn"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            ".image.aem-GridColumn"
+          ]
+        },
+        {
+          "id": "s2",
+          "name": "Breadcrumb",
+          "selector": [
+            ".breadcrumb.aem-GridColumn"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            ".breadcrumb.aem-GridColumn"
+          ]
+        },
+        {
+          "id": "s3",
+          "name": "Article body",
+          "selector": [
+            "main.container.responsivegrid.cmp-layout-container--fixed"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            ".cmp-title__text",
+            ".cmp-text"
+          ]
+        },
+        {
+          "id": "s4",
+          "name": "Author byline",
+          "selector": [
+            ".experiencefragment"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            ".experiencefragment"
+          ]
+        },
+        {
+          "id": "s5",
+          "name": "Share and related stories",
+          "selector": [
+            "aside.cmp-layoutcontainer--sidebar",
+            ".cmp-layoutcontainer--sidebar"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            ".cmp-title__text"
+          ]
+        }
+      ],
+      "urlPattern": "/us/en/magazine/*"
     }
   ]
 }
