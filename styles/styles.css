@@ -103,6 +103,57 @@ h4 { font-size: var(--heading-font-size-m); }
 h5 { font-size: var(--heading-font-size-s); }
 h6 { font-size: var(--heading-font-size-xs); }
 
+/* Breadcrumb — horizontal, unmarked, uppercase (not a numbered list).
+   Items separated by a yellow right-pointing triangle; last item is the
+   current (non-link) page. Tagged onto the authored <ol> by
+   decorateBreadcrumb() in scripts.js. */
+main ol.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--body-font-size-xs);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+main ol.breadcrumb > li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  color: var(--text-color);
+}
+
+/* yellow right-pointing triangle separator between items */
+main ol.breadcrumb > li:not(:last-child)::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 9px solid var(--brand-color);
+}
+
+main ol.breadcrumb :where(a:any-link) {
+  color: var(--text-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+main ol.breadcrumb :where(a:hover, a:focus) {
+  text-decoration: underline;
+}
+
+/* current page (trailing, non-link item) */
+main ol.breadcrumb > li:last-child {
+  color: var(--text-color);
+  font-weight: 400;
+}
+
 p,
 dl,
 ol,
@@ -276,6 +327,40 @@ button.button.accent:disabled:focus-visible {
   color: var(--dark-color);
 }
 
+/* WKND standalone default-content CTAs ("Download PDF", …) render as solid
+   yellow square buttons, matching the block CTAs — tagged onto an isolated
+   lone-link paragraph by decorateButtons() in scripts.js. */
+main a.button.cta:any-link {
+  display: inline-block;
+  border: none;
+  border-radius: 0;
+  padding: 14px 35px;
+  background-color: var(--brand-color);
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+main a.button.cta:any-link:hover,
+main a.button.cta:any-link:focus-visible {
+  background-color: var(--brand-color);
+  color: var(--text-color);
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+/* WKND section headings use the yellow underline accent */
+main .section > div > h2,
+main .section > div > h3 {
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--brand-color);
+  display: table;
+}
+
 main img {
   max-width: 100%;
   width: auto;
@@ -311,6 +396,213 @@ main > .section:first-of-type {
 @media (width >= 900px) {
   main > .section > div {
     padding: 0 32px;
+  }
+}
+
+/* Adventure detail page: spec/share sidebar beside the tabs, built by
+   decorateAdventureLayout() in scripts.js. Two-column on desktop only —
+   mobile stays stacked (the default document flow). */
+.adventure-details-col {
+  margin-bottom: 32px;
+}
+
+@media (width >= 900px) {
+  main .adventure-layout {
+    display: grid;
+    grid-template-columns: 291px minmax(0, 1fr);
+    column-gap: 48px;
+    align-items: start;
+  }
+}
+
+/* Magazine article page: article body + "Share This Story" sidebar, built by
+   rebuildMagazineArticle()/decorateMagazineLayout() in scripts.js. Two-column
+   on desktop only — mobile stays stacked (the default document flow; the
+   generic `main > div { margin: 40px 16px }` rule above already gives
+   .article-layout itself the usual side margin there). */
+.article-column h4 {
+  font-size: var(--body-font-size-xs);
+  text-transform: uppercase;
+}
+
+main .article-column p {
+  line-height: 2.5;
+  text-align: justify;
+}
+
+main .article-column blockquote {
+  margin: 0 0 18px;
+  padding: 14px 0;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xl);
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+}
+
+main .article-column blockquote p {
+  margin: 0;
+  line-height: 1.5;
+  text-align: left;
+}
+
+/* Author bio: small circular avatar (60px) with the name/role beside it, and
+   the social links as a single row of icons in a dark box on the right. */
+.article-byline {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-top: 60px;
+  padding-top: 60px;
+  border-top: 1px solid rgb(0 0 0 / 12%);
+}
+
+.article-byline-text {
+  flex: 1 1 auto;
+}
+
+.article-byline-text p {
+  margin: 0;
+}
+
+.article-byline > p:first-child {
+  flex: 0 0 auto;
+  width: 60px;
+  margin: 0;
+}
+
+.article-byline > p:first-child :where(picture, img) {
+  display: block;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.article-byline h2 {
+  margin: 0 0 4px;
+  font-size: var(--heading-font-size-l);
+  border-bottom: none;
+  padding-bottom: 0;
+  display: block;
+}
+
+.article-byline-social {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-left: auto;
+  flex: 0 0 auto;
+  padding: 14px 22px;
+  background-color: var(--dark-color);
+}
+
+.article-byline-social a:any-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--background-color);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.article-byline-social a:hover {
+  opacity: 0.8;
+}
+
+.article-byline-social svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+/* Share This Story sidebar: heading + related-article list. Each item is a
+   bold uppercase title link with the publication date on a muted line below,
+   set off by a thin left rule. */
+.share-story h5 {
+  margin: 0 0 20px;
+  font-size: var(--body-font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* The "Download PDF" heading link renders in the reference site's link-blue
+   (rgb(0 69 255)) rather than this repo's dark --link-color — every other
+   link here is explicitly overridden to dark/light, so this is the one spot
+   that still shows the base link color. Matched literally rather than
+   changing --link-color itself, which would recolor links sitewide. */
+.share-story h3 a {
+  color: rgb(0 69 255);
+}
+
+.share-story ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.share-story li {
+  padding: 0 0 4px 16px;
+  margin: 0 0 24px;
+  border-left: 2px solid var(--dark-color);
+  line-height: 1.4;
+}
+
+.share-story li a:any-link {
+  display: block;
+  color: var(--text-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.share-story li a:hover {
+  text-decoration: underline;
+}
+
+.share-story-date {
+  display: block;
+  margin-top: 6px;
+  color: rgb(105 105 105);
+  font-size: var(--body-font-size-xs);
+  text-transform: uppercase;
+}
+
+@media (width >= 900px) {
+  main .article-layout {
+    max-width: 1200px;
+
+    /* .article-layout is main's own direct child (it replaces what were
+       several main > .section elements), so it needs its own bottom margin —
+       otherwise the byline runs straight into the footer with no gap. The
+       generic `main > div { margin: 40px 16px }` rule gives it this on
+       mobile; restore the same 40px here since this rule's `margin: 0 auto`
+       (for horizontal centering) would otherwise zero it out. */
+    margin: 0 auto 40px;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 291px;
+    column-gap: 64px;
+    align-items: start;
+  }
+
+  main .article-layout > .article-column,
+  main .article-layout > .section {
+    margin: 0;
+    padding: 0;
+  }
+
+  main .article-layout .section > div {
+    max-width: none;
+    padding: 0;
+  }
+
+  /* restore the byline's separator spacing on desktop (the rule above
+     otherwise zeroes this wrapper's padding, collapsing the gap above it) */
+  main .article-layout .section > div.article-byline {
+    padding-top: 60px;
   }
 }
 
