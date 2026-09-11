@@ -12,12 +12,33 @@
 const INDEX_PATH = '/query-index.json';
 let indexPromise;
 
+// Content sections treated as indexable article collections — mirrors the
+// site's own URL structure (/<locale>/<category>/<slug>), not any index
+// property. A basic index configured through the Index Admin Tool only has
+// what it can pull from meta tags (title/description/image/etc.) — there's
+// no `category`/`locale` meta tag authored on any page — so those two fields
+// are derived from each row's `path` here instead, the same way the static
+// (authored) listings are already categorized via inferCategory() in
+// scripts.js. This means the dynamic listings work with the plainest
+// possible index config; no extra metadata authoring required.
+const CATEGORIES = ['magazine', 'adventures'];
+
+/** Fill in `category`/`locale` from `path` when the index doesn't supply them. */
+function deriveCategoryAndLocale(article) {
+  if (article.category && article.locale) return article;
+  const segments = article.path.split('/').filter(Boolean);
+  const category = article.category || segments.find((s) => CATEGORIES.includes(s)) || '';
+  const catIdx = segments.indexOf(category);
+  const locale = article.locale || (catIdx > 0 ? segments.slice(0, catIdx).join('/') : '');
+  return { ...article, category, locale };
+}
+
 /** Fetch and cache the query index for the lifetime of the page. */
 export async function fetchArticles() {
   if (!indexPromise) {
     indexPromise = fetch(INDEX_PATH)
       .then((resp) => (resp.ok ? resp.json() : { data: [] }))
-      .then((json) => json.data || [])
+      .then((json) => (json.data || []).map(deriveCategoryAndLocale))
       .catch(() => []);
   }
   return indexPromise;
