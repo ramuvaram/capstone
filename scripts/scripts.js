@@ -171,6 +171,45 @@ function decorateButtons(main) {
 }
 
 /**
+ * Some authored/migrated content (e.g. content scraped straight from the
+ * legacy site) keeps internal links with a .html extension, which 404 on EDS
+ * (it serves extensionless URLs). Strip .html from same-site paths; leave
+ * external links and in-page anchors untouched. Mirrors the same fix already
+ * applied to the nav fragment in blocks/header/header.js.
+ * @param {Element} main The main element
+ */
+function stripHtmlExtensions(main) {
+  main.querySelectorAll('a[href]').forEach((a) => {
+    const href = a.getAttribute('href');
+    if (href && href.startsWith('/') && href.endsWith('.html')) {
+      a.setAttribute('href', href.replace(/\.html$/, ''));
+    }
+  });
+}
+
+/**
+ * Detect the leading breadcrumb list (a short <ol> near the top of the page
+ * whose items are links plus a trailing current-page label) and tag it so CSS
+ * can render it as a proper horizontal breadcrumb instead of a numbered list.
+ * @param {Element} main The main element
+ */
+function decorateBreadcrumb(main) {
+  const sections = [...main.children];
+  main.querySelectorAll('ol').forEach((ol) => {
+    if (ol.classList.contains('breadcrumb')) return;
+    const items = [...ol.children];
+    // Breadcrumb heuristic: a short list (2–5 items) whose first item is a link,
+    // sitting in one of the first two top-level sections (not a mid-article
+    // ordered list).
+    const section = ol.closest('main > div');
+    const isEarly = section && sections.indexOf(section) <= 1;
+    const looksLikeCrumb = items.length >= 2 && items.length <= 5
+      && items[0].querySelector('a');
+    if (isEarly && looksLikeCrumb) ol.classList.add('breadcrumb');
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -182,6 +221,8 @@ export function decorateMain(main) {
   decorateSectionMetadata(main);
   decorateBlocks(main);
   decorateButtons(main);
+  decorateBreadcrumb(main);
+  stripHtmlExtensions(main);
 }
 
 /**

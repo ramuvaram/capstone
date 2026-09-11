@@ -103,6 +103,57 @@ h4 { font-size: var(--heading-font-size-m); }
 h5 { font-size: var(--heading-font-size-s); }
 h6 { font-size: var(--heading-font-size-xs); }
 
+/* Breadcrumb — horizontal, unmarked, uppercase (not a numbered list).
+   Items separated by a yellow right-pointing triangle; last item is the
+   current (non-link) page. Tagged onto the authored <ol> by
+   decorateBreadcrumb() in scripts.js. */
+main ol.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--body-font-size-xs);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+main ol.breadcrumb > li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  color: var(--text-color);
+}
+
+/* yellow right-pointing triangle separator between items */
+main ol.breadcrumb > li:not(:last-child)::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 9px solid var(--brand-color);
+}
+
+main ol.breadcrumb :where(a:any-link) {
+  color: var(--text-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+main ol.breadcrumb :where(a:hover, a:focus) {
+  text-decoration: underline;
+}
+
+/* current page (trailing, non-link item) */
+main ol.breadcrumb > li:last-child {
+  color: var(--text-color);
+  font-weight: 400;
+}
+
 p,
 dl,
 ol,
