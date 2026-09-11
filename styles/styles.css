@@ -58,6 +58,10 @@ body {
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
   line-height: 1.75;
+
+  /* Normalize fallback x-height to the web font so the async font swap
+     does not reflow text (keeps CLS low while fonts load non-render-blocking). */
+  font-size-adjust: from-font;
 }
 
 body.appear {
@@ -66,10 +70,13 @@ body.appear {
 
 header {
   /* min-height (not height): reserves layout space before the header block
-     loads, without clipping it once loaded — the WKND header (utility bar +
-     main bar) is taller than --nav-height on both mobile and desktop, and a
-     fixed height cut it off, hiding the main bar behind the page content. */
-  min-height: var(--nav-height);
+     loads, without clipping it once loaded. --nav-height (64px) covers only
+     the dark utility bar; the full WKND header (utility bar + white main
+     bar) renders at ~157px, so reserving just --nav-height still let the
+     page content shift down by ~90px once the header block finished
+     loading (a Lighthouse CLS hit). Reserve the full rendered height instead
+     — matches the reference site's own header rule exactly. */
+  min-height: 157px;
 }
 
 header .header,
@@ -94,6 +101,7 @@ h6 {
   font-weight: 400;
   line-height: 1.25;
   scroll-margin: 40px;
+  font-size-adjust: from-font;
 }
 
 h1 { font-size: var(--heading-font-size-xxl); }
