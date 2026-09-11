@@ -384,7 +384,7 @@ main > .section {
 }
 
 main > .section > div {
-  max-width: 1200px;
+  max-width: 1136px;
   margin: auto;
   padding: 0 24px;
 }
@@ -572,7 +572,7 @@ main .article-column blockquote p {
 
 @media (width >= 900px) {
   main .article-layout {
-    max-width: 1200px;
+    max-width: 1136px;
 
     /* .article-layout is main's own direct child (it replaces what were
        several main > .section elements), so it needs its own bottom margin —
