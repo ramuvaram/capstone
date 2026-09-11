@@ -1,7 +1,7 @@
 # Support Evidence: DA→EDS render pipeline emits empty markdown for nested detail subtrees
 
 **Site:** `ramuvaram / capstone` (Document Authoring content source)
-**Reported:** 2026-09-11
+**Reported:** 2026-09-11 (updated 2026-09-11 — one magazine page recovered; see "Key data point")
 **Preview host:** `https://main--capstone--ramuvaram.aem.page`
 **Live host:** `https://main--capstone--ramuvaram.aem.live`
 
@@ -22,12 +22,26 @@ path structure renders correctly on another site, so it is not inherent to the p
 | `/us/en/adventures` (listing) | — | **39960 b** | ok | ✅ renders |
 | `/us/en/faqs` | — | **4211 b** | ok | ✅ renders |
 | `/us/en/about-us` | — | **7655 b** | ok | ✅ renders |
-| `/us/en/magazine/arctic-surfing` | **0 b** | **13 b** | 8072 b | ❌ empty |
+| `/us/en/magazine/arctic-surfing` | **7148 b** | **10533 b** | 9792 b | ✅ **renders (recovered)** |
+| `/us/en/magazine/guide-la-skateparks` | **0 b** | **13 b** | 6178 b | ❌ empty |
+| `/us/en/magazine/san-diego-surf` | **0 b** | **13 b** | 5159 b | ❌ empty |
+| `/us/en/magazine/ski-touring` | **0 b** | **13 b** | 5976 b | ❌ empty |
+| `/us/en/magazine/western-australia` | **0 b** | **13 b** | 10061 b | ❌ empty |
 | `/us/en/adventures/tahoe-skiing` | **0 b** | **13 b** | 3282 b | ❌ empty |
 
-Every page under the two nested detail subtrees (`/us/en/adventures/*` — 16 pages, `/us/en/magazine/*`
-— 5 pages) exhibits the empty-render behavior. Top-level pages and the section landing/listing pages
+Most pages under the two nested detail subtrees (`/us/en/adventures/*` — 16 pages, `/us/en/magazine/*`
+— 5 pages) exhibit the empty-render behavior. Top-level pages and the section landing/listing pages
 render normally.
+
+### Key data point: one page recovered on its own, its identical siblings did not
+
+`/us/en/magazine/arctic-surfing` **started rendering** (generated `.md` = 7148 b, live = 10533 b) after
+a period of returning 0 bytes — with **no change to its source or template**. The other four
+`/us/en/magazine/*` pages use the **same template, the same content type (all default content, no
+blocks), the same section mapping, and were published in the same batch**, yet they still generate
+0-byte markdown. This isolates the fault to **per-document markup→markdown conversion on the render
+service**: it is not the content, template, section mapping, or publish path (all identical to the page
+that now renders), and it recovers per-document on an opaque backend schedule rather than all at once.
 
 ## The pipeline reports success but emits empty output
 
@@ -67,6 +81,11 @@ So the pipeline fetches the source markup and returns 200, but the markup→mark
    re-POST source + re-preview), and page-URL cache-busting. All still yield `.md` = 0 bytes.
 5. **Not a global outage.** Top-level pages (home, section listings) render fine at the same time,
    and were re-verified during each check — the pipeline is healthy for non-nested paths.
+6. **Not the template / section mapping / publish path.** `/us/en/magazine/arctic-surfing` recovered
+   and now renders, while its four siblings — same template, same all-default-content type, same section
+   mapping, same publish batch — still return 0-byte markdown. Re-uploading the stuck pages' sources
+   (fresh mtime) + re-previewing returned HTTP 200 but left `.md` at 0 bytes. The only variable is the
+   render service converting one document but not the others.
 
 ## Request
 
@@ -76,12 +95,13 @@ Please force a **reconvert / reindex** of the content-bus for the `/us/en/advent
 markup→markdown conversion returns 0 bytes for these nested paths while the source is present and
 sibling/parent paths convert normally.
 
-## Affected URLs (21)
+## Affected URLs (20 currently empty; 1 recovered)
 
-Adventures (`/us/en/adventures/`): bali-surf-camp, beervana-portland, climbing-new-zealand,
-colorado-rock-climbing, cycling-southern-utah, cycling-tuscany, downhill-skiing-wyoming,
-gastronomic-marais-tour, napa-wine-tasting, riverside-camping-australia, ski-touring-mont-blanc,
-surf-camp-costa-rica, tahoe-skiing, west-coast-cycling, whistler-mountain-biking, yosemite-backpacking
+Adventures (`/us/en/adventures/`) — 16 still empty: bali-surf-camp, beervana-portland,
+climbing-new-zealand, colorado-rock-climbing, cycling-southern-utah, cycling-tuscany,
+downhill-skiing-wyoming, gastronomic-marais-tour, napa-wine-tasting, riverside-camping-australia,
+ski-touring-mont-blanc, surf-camp-costa-rica, tahoe-skiing, west-coast-cycling, whistler-mountain-biking,
+yosemite-backpacking
 
-Magazine (`/us/en/magazine/`): arctic-surfing, guide-la-skateparks, san-diego-surf, ski-touring,
-western-australia
+Magazine (`/us/en/magazine/`) — 4 still empty: guide-la-skateparks, san-diego-surf, ski-touring,
+western-australia. **Recovered:** arctic-surfing (now renders).
