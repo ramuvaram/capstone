@@ -479,10 +479,11 @@ function decorateShareStory(shareSection) {
   wrap.querySelectorAll('li > a[href]').forEach((a) => {
     const m = a.textContent.match(SHARE_DATE_RE);
     if (!m) return;
+    const [, dateText] = m;
     a.textContent = a.textContent.slice(0, m.index).trim();
     const date = document.createElement('span');
     date.className = 'share-story-date';
-    date.textContent = m[1];
+    date.textContent = dateText;
     a.after(date);
   });
 }
